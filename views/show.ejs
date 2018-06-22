@@ -1,0 +1,163 @@
+<% include partials/header %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <p class="lead">YelpCamp</p>
+        <div class="list-group">
+          <li class="list-group-item active">Info 1</li>
+          <li class="list-group-item">Info 2</li>
+          <li class="list-group-item">Info 3</li>
+          <li class="list-group-item">
+            <a class="btn btn-md btn-primary btn-block" href="/campgrounds">return to the campgrounds page</a>
+          </li>
+        </div>
+        <!-- MAP  -->
+      </div>
+      <div class="col-md-9">
+        <div class="thumbnail">
+          <img class="img-responsive" src="<%= campground.image %>">
+          <div class="camption-full">
+            <h4 class="pull-right">$<%=campground.price%>/night</h4>
+            <h1>
+              <a>
+                <%= campground.name %>
+              </a>
+            </h1>
+            <p>
+              <%= campground.description %>
+            </p>
+            <p>
+             <em>Posted by: <a class="userover"  href="/profils/<%=campground.author.id%>"><%= campground.author.username %></em></a>
+            </p>
+            <% if(typeof user != 'undefined' && user.id == campground.author.id){ %>
+                <button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#editbutton">
+                    Edit Campground
+                  </button>
+                  <button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#deletebutton">
+                    Delete Campground
+                  </button>
+              <% } %>
+          </div>
+        </div>
+        <% if(typeof user != 'undefined'){ %>
+        <div class="well">
+                <form action="/campgrounds/<%= campground._id %>/comments" method="post">
+                  <div class="form-group">
+                    <textarea class="form-control" style="resize:none;" rows="4" name="comment" placeholder="Post a comment" required></textarea>
+                  </div>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-md btn-primary btn-block" type="submit">Submit</button>
+              </div>
+              </form>
+              <% } %>
+        <hr>
+        <% for (var i = campground.comments.length - 1; i >=  0; i--){ %>
+          <div class="row">
+            <div class="col-md-12">
+           <strong><a class="userover" href="/profils/<%= campground.comments[i].author.id %>"><%= campground.comments[i].author.username %></a></strong> 
+           <div class="pull-right">
+             <span>10 days ago</span>
+             <%  if ( user && campground.comments[i].author.id == user.id) { %>
+              <div class="dropdown pull-right">
+                  <button style="padding:-6px 12px 0 !important;border:none !important;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a id="editcommentbutton<%=i%>"><span class="glyphicon glyphicon-share-alt"></span> Edit Comment</a></li>
+                    <li><a href="/campgrounds/<%= campground._id %>/comments/<%= campground.comments[i]._id %>/delete"><span class="glyphicon glyphicon-remove"></span>  Delete Comment</a></li>
+                  </ul>
+                </div>
+              <% } %>
+           </div>
+              <p id="comment<%=i%>">
+                <%= campground.comments[i].text %>
+              </p>
+              <form action="/campgrounds/<%= campground._id %>/comments/<%= campground.comments[i]._id %>/edit" method="POST" id="formeditcomment<%=i%>" style="display: none">
+                <div class="form-group">
+                    <textarea class="form-control" style="resize:none;" rows="4" name="comment" placeholder="Post a comment" required><%= campground.comments[i].text %></textarea>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-success btn-xs">Save Changes</button>
+                  <button type="button" class="btn btn-danger btn-xs" id="cancelcommentedit<%=i%>">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <hr>
+          <script>
+            $("#editcommentbutton<%=i%>").on("click", function(){
+              $("#comment<%=i%>").fadeToggle(100, function(){
+                $("#formeditcomment<%=i%>").fadeToggle(100);
+              });
+            });
+            $("#cancelcommentedit<%=i%>").on("click", function(){
+              $("#comment<%=i%>").fadeToggle(100, function(){
+                $("#formeditcomment<%=i%>").fadeToggle(100);
+              });
+            });
+          </script>
+          <% }; %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for edit campground -->
+<div class="modal fade" id="editbutton" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">Editing Campground</h3>
+            </div>
+            <div class="modal-body">
+                <form action="/campgrounds/<%= campground._id %>/edit" method="POST" enctype="multipart/form-data">
+                  <div class="form-group">
+                      <input class="form-control" type="text" name="name" placeholder="name" value="<%= campground.name %>" required>
+                    </div>
+                    <div class="thumbnail">
+                        <img class="img-responsive" src="<%= campground.image %>">
+                    </div>
+                      <div class="form-group">
+                        <input class="form-control" type="file" name="image" placeholder="image" accept="image/*">
+                      </div>
+                      <div class="form-group">
+                          <input class="form-control" type="number" placeholder="0.00" required name="price" min="0" value="<%= campground.price %>" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'red'">
+                        </div>
+                      <div class="form-group">
+                        <textarea class="form-control" style="resize:none" name="description" rows="8" placeholder="description" required><%= campground.description %></textarea>
+                      </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+    </div>
+</div>
+ 
+<!-- Modal for delete campground -->
+<div class="modal fade" id="deletebutton" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Want to delete this campground?</h4>
+            </div>
+            <div class="modal-footer">
+                <form action="/campgrounds/<%= campground._id %>/delete" method="POST">
+                  <button type="submit" class="btn btn-success">Yes</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  <% include partials/footer %>

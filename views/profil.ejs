@@ -1,0 +1,20 @@
+<% include partials/header %>
+<div class="jumbotron text-center">
+    <div class="container">
+        <h2>Profile of <%= u.username %></h2>
+        
+        <div class="thumbnail">
+            <img src="/imgs/noprofile.png" alt="profile photo" id="photoprofile">
+            <div class="caption">
+                <h3>Infos</h3>
+                <p>Email: <%= u.email %></p>
+                <p>Rank: <%= u.rank %></p>
+                <p>Birthday: <%= u.date %></p>
+                <p>Country: <%= u.country %></p>
+                <p>Address: <%= u.address %></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<% include partials/footer %>

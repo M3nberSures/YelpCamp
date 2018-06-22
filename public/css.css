@@ -1,0 +1,29 @@
+div.well {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important; 
+}
+
+.thumbnail img {
+    width: 100% !important;
+}
+
+.thumbnail .camption-full {
+    padding: 0 6px;
+}
+
+body {
+    padding-top: 70px;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+#photoprofile {
+    max-width: 50%;
+}
+
+.userover {
+    
+}
+
