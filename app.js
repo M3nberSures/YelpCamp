@@ -1,8 +1,14 @@
+require('dotenv').config();
+const production = (process.env.PRODUCTION === 'true');
 const express = require("express");
 const app = express();
 const bodyparser = require("body-parser");
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/yelp_camp");
+if (production) {
+  mongoose.connect(process.env.PROD_DATABASE_URL);
+} else {
+  mongoose.connect(process.env.DEV_DATABASE_URL);
+}
 const cool = require('cool-ascii-faces');
 const path = require('path');
 const PORT = process.env.PORT || 8080;
@@ -41,9 +47,9 @@ let upload = multer({
 
 const cloudinary = require('cloudinary');
 cloudinary.config({
-  cloud_name: 'dbmathieu',
-  api_key: "369353311121155",
-  api_secret: "6X7mC9mtjdE4jdx8a6pTA1xWxTQ"
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET
 });
 
 app.use(express.static(path.join(__dirname, '/public')));
