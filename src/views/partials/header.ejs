@@ -1,170 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-      <meta charset="utf-8">
-      <title><%= doctitle %></title>
+      <title>YelpCamp | <%= doctitle %></title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <script src="/bootstrap/js/jquery.min.js"></script>
-      <script src="/bootstrap/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-      <link rel="stylesheet" href="/fontawesome/web-fonts-with-css/css/fontawesome-all.css">
-      <link rel="stylesheet" href="/css.css">
+      <link rel="stylesheet" href="/bootstrap-4.1.3/css/bootstrap.min.css">
+
+      <script src="https://kit.fontawesome.com/db148ba7a4.js" crossorigin="anonymous"></script>
   </head>
   <body>
-    <!-- some checkup -->
-    <% if ( errorlogin.length > 0 || notlogin.length > 0) { %>
-      <script>
-        $(document).ready(function(){
-          $('#login').modal('toggle');
-        });
-      </script>
-    <% }; %>
-    <% if ( errorregister.length > 0 ) { %>
-      <script>
-        $(document).ready(function(){
-          $('#register').modal('toggle');
-        });
-      </script>
-    <% }; %>
-      <nav class="navbar navbar-default navbar-fixed-top">
-          <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="/">YelpCamp</a>
-            </div>
-        
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-                <li><a href="/campgrounds">Campgrounds</a></li>
+
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <a class="navbar-brand" href="/">YelpCamp</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/campgrounds">Campgrounds <span class="sr-only">(current)</span></a>
+                </li>
                 <% if(typeof user != 'undefined'){ %>
-                  <li><a href="/campgrounds/new">New Campground</a></li>
+                <li class="nav-item">
+                    <a data-toggle="modal" data-target="#modal-create-campground" class="nav-link" href="#">Add Campground</a>
+                </li>
                 <% } %>
-              </ul>
-              <ul class="nav navbar-nav navbar-right">
+            </ul>
+            <ul class="navbar-nav ml-auto">
                 <% if(typeof user == 'undefined'){ %>
-                  <li><a href="#login" data-toggle="modal" data-target="#login"><i class="fas fa-sign-in-alt"></i>Login</a></li>
-                  <li><a href="#register" data-toggle="modal" data-target="#register"><i class="fas fa-user-plus"></i>Register</a></li>
+                <li class="nav-item">
+                    <a data-toggle="modal" data-target="#modal-login" class="nav-link" href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="modal" data-target="#modal-register" class="nav-link" href="#"><i class="fas fa-user-plus"></i> Register</a>
+                </li>
                 <% } else { %>
-                  <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user"></i>Login as, <%= user.username %><span class="caret"></span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="/profils/<%= user.id %>"><i class="glyphicon glyphicon-home"></i> Profile</li>
-                        <li><a href="#"><i class="fas fa-key"></i> Change Password</a></li>
-                      </ul>
-                    </li>
-                  <li><a href="/logout"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user"></i> Login as, <%= user.username %>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/profils/<%= user.id %>"><i class="fas fa-home"></i> Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-key"></i> Change Password</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </li>
                 <% } %>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
+            </ul>
+        </div>
+    </nav>
 
-
-        <!-- Modal for Login -->
-        <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                      <h3 class="modal-title">Login</h3>
-                  </div>
-                  <div class="modal-body">
-                    <form class="form-horizontal" action="/login" method="POST">
-                      <div class="form-group">
-                        <label for="usernamelogin" class="col-sm-2 control-label">Username:</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="usernamelogin" name="username" placeholder="username" required>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="passwordlogin" class="col-sm-2 control-label">Password</label>
-                        <div class="col-sm-10">
-                          <input type="password" class="form-control" id="passwordlogin" name="password" placeholder="password" required>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox" name="remember" value="true"> Remember me
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <% if ( errorlogin.length > 0) { %>
-                        <div class="alert alert-danger" role="alert"><b>Oh snap!</b> <%= errorlogin %>, try again!</div>
-                      <% }; %>
-                      <% if (notlogin.length > 0) { %>
-                        <div class="alert alert-danger" role="alert"><b>Oh snap!</b> <%= notlogin %></div>
-                      <% }; %>
-                      
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-default">Sign in</button>
-                    </form>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <!-- Modal Login End -->
-
-      <!-- Modal for Register-->
-      <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- Modal Create Campground Start -->
+    <div class="modal fade" id="modal-create-campground" tabindex="-1" role="dialog" aria-labelledby="createCampgroundModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Campground</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title">Register</h3>
                 </div>
-                <div class="modal-body">
-                  <form class="form-horizontal" action="/register" method="POST">
-                    <div class="form-group">
-                      <label for="username" class="col-sm-2 control-label">Username:</label>
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="username" required>
-                      </div>
+                <form action="/campgrounds" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="name" class="form-control" name="name" id="name" placeholder="Enter name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image</label>
+                            <input type="file" class="form-control-file" name="image" id="image" accept="image/*" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price per night</label>
+                            <input type="number" class="form-control" placeholder="0.00$" name="price" id="price" min="0" step="1" title="Currency" pattern="^\d+(?:\.\d{1,2})?$" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" name="description" id="description" rows="8" placeholder="description" required></textarea>
+                        </div>
                     </div>
-                    <div class="form-group">
-                      <label for="email" class="col-sm-2 control-label">Email:</label>
-                      <div class="col-sm-10">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="email" required>
-                      </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
                     </div>
-                    <div class="form-group">
-                      <label for="password" class="col-sm-2 control-label">Password</label>
-                      <div class="col-sm-10">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="password" required>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="password2" class="col-sm-2 control-label">Confirm</label>
-                      <div class="col-sm-10">
-                        <input type="password" class="form-control" id="password2" name="password2" placeholder="confirm password" required>
-                      </div>
-                    </div>
-                    <% if ( errorregister.length > 0 ) { %>
-                      <div class="alert alert-danger" role="alert"><b>Oh snap!</b> <%= errorregister %>, try again!</div>
-                    <% }; %>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Create Campground End -->
+
+    <!-- Modal Login Start -->
+    <div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-default">Sign up</button>
-                  </form>
+                <form action="/login" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usernamelogin">Username</label>
+                            <input type="text" class="form-control" id="usernamelogin" name="username" placeholder="Enter username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordlogin">Password</label>
+                            <input type="password" class="form-control" id="passwordlogin" name="password" placeholder="Enter password" required>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="remember" value="true">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
+                        <% if ( errorlogin.length > 0) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oh snap!</strong> <%= errorlogin %>, try again!
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        <% }; %>
+                        <% if (notlogin.length > 0) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oh snap!</strong> <%= notlogin %>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        <% }; %>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Sign in</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Login End -->
+
+    <!-- Modal Register Start -->
+    <div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <form action="/register" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+                        </div>
+                        <div class="form-group">
+                            <label for="password2">Password</label>
+                            <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm password">
+                        </div>
+                        <% if ( errorregister.length > 0 ) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oh snap!</strong> <%= errorregister %>, try again!
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        <% }; %>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Sign up</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -173,13 +193,19 @@
 
     <div class="container">
       <% if (error && error.length > 0 ) { %>
-        <div class="alert alert-danger" role="alert">
-          <%= error %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> <%= error %>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
       <% } %>
       <% if (success && success.length > 0 ) { %>
-        <div class="alert alert-success" role="alert">
-          <%= success %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> <%= success %>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
       <% } %>
     </div>

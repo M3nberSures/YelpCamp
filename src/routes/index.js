@@ -14,16 +14,16 @@ let p1 = req.body.password;
 let p2 = req.body.password2;
 if ( p1 !== p2) {
   req.flash("errorregister", "Password does not match");
-  return res.redirect("/campgrounds");
+  return res.redirect("back");
 };
 let newUser = new User({username: req.body.username, email: req.body.email});
 User.register(newUser, req.body.password, function(err, user){
   if (err){
     req.flash("errorregister", err.message);
-    return res.redirect("/campgrounds");
+    return res.redirect("back");
   };
   passport.authenticate("local")(req, res, function(){
-    req.flash("success", "Successfully registered," + user.username + "!");
+    req.flash("success", "Welcome to YelpCamp, " + user.username + " !");
     res.redirect("back");
   });
 });
@@ -38,11 +38,11 @@ User.register(newUser, req.body.password, function(err, user){
         return next(err); }
       if (!user) { 
         req.flash("errorlogin", "Wrong username or password!");
-        return res.redirect('back'); } // error=login
+        return res.status(200).redirect('back'); } // error=login
       req.logIn(user, function(err) {
         if (err) { return next(err); }
-        req.flash("success", "Welcome back," + user.username + "!");
-        return res.redirect('back');
+        req.flash("success", "Welcome back, " + user.username + " !");
+        return res.status(200).redirect('back');
       });
     })(req, res, next);
   });

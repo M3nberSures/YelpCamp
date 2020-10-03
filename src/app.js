@@ -70,6 +70,26 @@ const corsOptions = {
 app.use(helmet({
   contentSecurityPolicy: false
 }));
+app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        "default-src": ["'self'"],
+        "base-uri": ["'self'"],
+        "font-src": ["'self'", "https: data:"],
+        "frame-ancestors": ["'self'"],
+        "img-src": ["'self'", "https://res.cloudinary.com/", "data:"],
+        "object-src": ["'none'"],
+        "script-src": ["'self'", "'unsafe-inline'", "https://kit.fontawesome.com/"],
+        "script-src-attr": ["'none'"],
+        "style-src": ["'self'", "https: 'unsafe-inline'"]
+      },
+    })
+);
+app.use(
+    helmet.referrerPolicy({
+      policy: ["origin", "unsafe-url"],
+    })
+);
 if (production) {
   app.use(cors(corsOptions));
 } else {

@@ -58,16 +58,9 @@ router.get("/", (req, res) => {
       let newCampground = new Camground (req.body.name, req.body.image, req.body.description, req.body.price, req.user.username, req.user._id);
       Campground.create(newCampground, function (err, newlyCreated) {
         if (err) throw err;
-        req.flash("success", "Successfully created new campground " + newlyCreated.name +"!");
-        res.redirect("/campgrounds");
+        req.flash("success", "Successfully created new campground " + newlyCreated.name +" !");
+        res.redirect(`/campgrounds/${newlyCreated._id}`);
       });
-    });
-  });
-  
-  // display form for new campground
-  router.get("/new", middleware.isLoggedIn, (req, res) => {
-    res.render("new.ejs", {
-      doctitle: "Add New",
     });
   });
   
@@ -101,9 +94,9 @@ router.get("/", (req, res) => {
         if (err) throw err;
         campground.comments.push(comment);
         campground.save();
+        return res.redirect("/campgrounds/" + campground._id);
       });
     });
-    res.redirect("/campgrounds/" + req.params.id);
   });
   
   // edit comment
