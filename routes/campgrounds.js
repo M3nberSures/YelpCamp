@@ -3,13 +3,7 @@ const router = express.Router();
 const Campground = require("../models/campground");
 const Comment = require("../models/comment");
 const multer = require('multer');
-const passport = require("passport");
-const LocalStrategy = require("passport-local");
-const passportLocalMongoose = require("passport-local-mongoose");
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const session = require('express-session');
-const setCookie = require('set-cookie-parser');
 const middleware = require("../middleware");
 const storage = multer.diskStorage({
   filename: function (req, file, callback) {
