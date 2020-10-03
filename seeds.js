@@ -1,6 +1,6 @@
 const mongoose = require("mongoose"),
-    Campground = require("./models/campground"),
-    Comment = require("./models/comment");
+    Campground = require("./src/models/campground"),
+    Comment = require("./src/models/comment");
 
 var data = [{
         name: "Cloud's Rest",
