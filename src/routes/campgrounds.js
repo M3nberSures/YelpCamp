@@ -3,7 +3,10 @@ const router = express.Router();
 const Campground = require("../models/campground");
 const Comment = require("../models/comment");
 const multer = require('multer');
+const moment = require('moment');
 const middleware = require("../middleware");
+
+const utils = require('../Utils/date');
 
 const storage = multer.diskStorage({
   filename: function (req, file, callback) {
@@ -71,10 +74,10 @@ router.get("/", (req, res) => {
       if (err) {
         console.log(err);
       } else  {
-        // console.log(foundCampground);
         res.render("show", {
           doctitle: "Show",
-          campground: foundCampground
+          campground: foundCampground,
+          formatFromAgo: utils.formatFromAgo
         });
       }
     });

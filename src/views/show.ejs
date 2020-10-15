@@ -25,6 +25,9 @@
                   <p>
                       <em>Posted by: <a href="/profils/<%=campground.author.id%>"> <%= campground.author.username %></a></em>
                   </p>
+                  <p>
+                    <em>Posted: <%= formatFromAgo(campground.createdAt) %></em>
+                  </p>
                   <% if(typeof user != 'undefined' && user.id == campground.author.id){ %>
                       <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit-campground-modal" style="color: white;">
                           Edit Campground
@@ -65,7 +68,7 @@
                   </form>
               </div>
               <div class="ml-3 d-flex" style="justify-content: center; align-items: center">
-                  <span>10 days ago</span>
+                <span><%= formatFromAgo(campground.comments[i].createdAt) %></span>
                   <%  if ( user && campground.comments[i].author.id == user.id) { %>
                   <div class="dropdown">
                       <button class="btn" type="button" id="editDeleteButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: white;">

@@ -9,7 +9,7 @@ const commentSchema = mongoose.Schema({
         },
         username: String
     }
-});
+}, { timestamps: true });
 
 
 

@@ -11,8 +11,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const flash = require("connect-flash");
+const moment = require('moment');
 // seedDB();
-
 const port = process.env.PORT || 8080;
 const production = (process.env.PRODUCTION === 'true');
 

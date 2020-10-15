@@ -11,7 +11,7 @@ let userSchema = new mongoose.Schema({
     date: { type: String, default: 'No birthday given'},
     country: { type: String, default: 'No country given'},
     address: { type: String, default: 'No address given'},
-});
+}, { timestamps: true });
 
 userSchema.plugin(passportLocalMongoose);
 
