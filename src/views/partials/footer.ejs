@@ -17,5 +17,13 @@
         });
     </script>
 <% }; %>
+
+<% if ( errorpasswordchange.length > 0 ) { %>
+    <script>
+        $(document).ready(function(){
+            $('#modal-password-change').modal('toggle');
+        });
+    </script>
+<% }; %>
 </body>
 </html>

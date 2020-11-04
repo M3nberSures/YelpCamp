@@ -7,6 +7,7 @@ const User = require("../models/user");
 const UsedToken = require("../models/usedToken");
 
 const email = require('../Utils/email');
+const usersUtil = require('../Utils/users');
 
 module.exports.getIndex = (req, res) => {
     res.render("landing");
@@ -100,6 +101,29 @@ module.exports.postRegister = (req, res) => {
     }
   }
 
-  module.exports.changePassword = function(req, res) {
-    res.status(200).redirect('back');
+  module.exports.changePassword = async function(req, res) {
+    const userId = req.user._id;
+    const currentPassword = req.body.currentPassword;
+    const changePassword = req.body.changePassword;
+    const confirmPassword = req.body.confirmPassword;
+
+    if (!currentPassword || !changePassword || !confirmPassword) {
+      req.flash("errorpasswordchange", "Some data is missing!");
+      return res.status(400).redirect('back');
+    }
+
+    try {
+      const findUser = await User.findById(userId);
+      if (!usersUtil.comparePassword(changePassword, confirmPassword)) {
+        req.flash("errorpasswordchange", "Password dont match!");
+        return res.status(400).redirect('back');
+      }
+      await findUser.changePassword(currentPassword, changePassword);
+      findUser.save();
+      req.flash("success", "Successfully change your password!");
+      return res.status(200).redirect('back');
+    } catch (e) {
+      req.flash("errorpasswordchange", e.message);
+      return res.status(404).redirect('back');
+    }
   }

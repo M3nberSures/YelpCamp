@@ -67,9 +67,7 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-app.use(helmet({
-  contentSecurityPolicy: false
-}));
+app.use(helmet());
 app.use(
     helmet.contentSecurityPolicy({
       directives: {
@@ -77,11 +75,12 @@ app.use(
         "base-uri": ["'self'"],
         "font-src": ["'self'", "https: data:"],
         "frame-ancestors": ["'self'"],
-        "img-src": ["'self'", "https://res.cloudinary.com/", "data:"],
+        "img-src": ["'self'", "res.cloudinary.com", "data:"],
         "object-src": ["'none'"],
-        "script-src": ["'self'", "'unsafe-inline'", "https://kit.fontawesome.com/"],
+        "script-src": ["'self'", "'unsafe-inline'", "kit.fontawesome.com"],
         "script-src-attr": ["'none'"],
-        "style-src": ["'self'", "https: 'unsafe-inline'"]
+        "style-src": ["'self'", "https: 'unsafe-inline'"],
+        "connect-src": ["'self'", "ka-f.fontawesome.com"]
       },
     })
 );
@@ -118,6 +117,7 @@ app.use(function(req, res, next){
   res.locals.notlogin = req.flash("notlogin");
   res.locals.errorlogin = req.flash("errorlogin");
   res.locals.errorregister = req.flash("errorregister");
+  res.locals.errorpasswordchange = req.flash("errorpasswordchange");
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
   next();

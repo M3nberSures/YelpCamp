@@ -8,11 +8,13 @@ router.get("/", indexController.getIndex);
   
 // register routes
 router.post("/register", indexController.postRegister);
-  
+
 
  router.post('/login', indexController.postLogin);
   
   router.get("/logout", indexController.getLogout);
+
+  router.post("/changepassword", indexController.changePassword);
 
   // profils routes
   router.get("/profils/:id", indexController.getProfileById);
