@@ -121,3 +121,5 @@ dist
 /workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+
+/src/public/uploads/images/*.*
