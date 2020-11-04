@@ -81,6 +81,14 @@
                             <label for="description">Description</label>
                             <textarea class="form-control" name="description" id="description" rows="8" placeholder="description" required></textarea>
                         </div>
+                        <% if ( errorcampground.length > 0) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oh snap!</strong> <%= errorcampground %>, try again!
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        <% }; %>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -118,6 +118,7 @@ app.use(function(req, res, next){
   res.locals.errorlogin = req.flash("errorlogin");
   res.locals.errorregister = req.flash("errorregister");
   res.locals.errorpasswordchange = req.flash("errorpasswordchange");
+  res.locals.errorcampground = req.flash("errorcampground");
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
   next();

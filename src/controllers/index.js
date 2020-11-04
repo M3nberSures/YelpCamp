@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const User = require("../models/user");
 const UsedToken = require("../models/usedToken");
 
-const email = require('../Utils/email');
-const usersUtil = require('../Utils/users');
+const email = require('../utils/email');
+const usersUtil = require('../utils/users');
 
 module.exports.getIndex = (req, res) => {
     res.render("landing");
