@@ -29,7 +29,8 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.0",
-    "set-cookie-parser": "^2.2.0"
+    "set-cookie-parser": "^2.2.0",
+    "sharp": "^0.26.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

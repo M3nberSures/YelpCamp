@@ -3,7 +3,8 @@ const router = express.Router();
 
 const middleware = require("../middleware");
 const campgroundsController = require('../controllers/campgrounds');
-const upload = require('../utils/upload');
+const upload = require('../middleware/upload');
+const resize = require('../middleware/resize');
 
 // get camprounds
 router.get("/", campgroundsController.getCampgrounds);
@@ -12,7 +13,7 @@ router.get("/", campgroundsController.getCampgrounds);
 router.get("/:id", campgroundsController.getCampground);
 
 // post request to create new camground
-router.post("/", middleware.isLoggedIn, upload, campgroundsController.postCampground);
+router.post("/", middleware.isLoggedIn, upload, resize.resizeImages, campgroundsController.postCampground);
 
 // edit campground
 router.post("/:id/edit", middleware.isLoggedIn, middleware.ownerCheck, upload, campgroundsController.postEditCampground);

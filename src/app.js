@@ -55,13 +55,6 @@ process.on('SIGINT', function() {
   });
 });
 
-const cloudinary = require('cloudinary');
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET
-});
-
 const corsOptions = {
   origin: 'https://yelpcamp.mathieulussier.ca/',
   optionsSuccessStatus: 200
