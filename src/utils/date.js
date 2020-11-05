@@ -33,7 +33,7 @@ module.exports.formatFromAgo = function(rawDate) {
     }
 
     const seconds = diff.seconds();
-    if (seconds > 0 && minutes < 1 && hours < 1 && days < 1 && months < 1 && years < 1) {
+    if (seconds >= 0 && minutes < 1 && hours < 1 && days < 1 && months < 1 && years < 1) {
         string += `${seconds} ${seconds > 1 ? 'seconds' : 'second'} `;
     }
 

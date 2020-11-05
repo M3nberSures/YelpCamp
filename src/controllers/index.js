@@ -40,15 +40,19 @@ module.exports.postRegister = (req, res) => {
 
   module.exports.postLogin = (req, res, next) => {
     passport.authenticate('local', function(err, user, info) {
-      if (typeof req.body.remember != "undefined" && req.body.remember === true) {
-      };
-      if (err) { 
-        return next(err); }
+      if (typeof req.body.remember != "undefined" && req.body.remember === true) {};
+      if (err) {
+        req.flash("error", err.message);
+        return res.redirect('back');
+      }
       if (!user) { 
         req.flash("errorlogin", "Wrong username or password!");
         return res.status(200).redirect('back'); } // error=login
       req.logIn(user, function(err) {
-        if (err) { return next(err); }
+        if (err) {
+          req.flash("error", err.message);
+          return res.redirect('back');
+        }
         req.flash("success", "Welcome back, " + user.username + " !");
         return res.status(200).redirect('back');
       });
@@ -63,6 +67,14 @@ module.exports.postRegister = (req, res) => {
 
   module.exports.getProfileById = function(req, res){
     User.findById(req.params.id, function (err, u){
+      if (err) {
+        req.flash("error", err.message);
+        return res.redirect('back');
+      }
+      if (!u) {
+        req.flash("error", "Cannot find the user profile your are looking for !");
+        return res.redirect('back');
+      }
       res.render("profil", { doctitle: "profile", u:u});
     });
   }

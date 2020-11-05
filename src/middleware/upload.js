@@ -1,22 +1,24 @@
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const nanoid = require('nanoid');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const updloadsPath = path.join('src/public/uploads/images');
+        const updloadsPath = path.join('src/public/uploads');
         if (!fs.existsSync(updloadsPath)) {
             fs.mkdirSync(updloadsPath);
         }
-        cb(null, path.join('src/public/uploads/images'))
+        cb(null, path.join('src/public/uploads'))
     },
-    filename: function (req, file, callback) {
-        callback(null, Date.now() + file.originalname);
+    filename: async function (req, file, callback) {
+        const ext = path.extname(file.originalname);
+        const filename = await nanoid.nanoid() + ext;
+        callback(null, filename);
     }
 });
 
 let imageFilter = function (req, file, cb) {
-    // accept image files only
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
         return cb(new Error('Only image files are allowed!'), false);
     }

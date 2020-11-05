@@ -1,20 +1,87 @@
 <% include partials/header %>
-<div class="jumbotron text-center">
-    <div class="container">
-        <h2>Profile of <%= u.username %></h2>
-        
-        <div class="thumbnail">
-            <img src="/imgs/noprofile.png" alt="profile photo" id="photoprofile">
-            <div class="caption">
-                <h3>Infos</h3>
-                <p>Email: <%= u.email %></p>
-                <p>Rank: <%= u.rank %></p>
-                <p>Birthday: <%= u.date %></p>
-                <p>Country: <%= u.country %></p>
-                <p>Address: <%= u.address %></p>
+<div class="container emp-profile">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="profile-img">
+                        <img src="/imgs/noprofile.png" alt=""/>
+                        <div class="file btn btn-lg btn-primary">
+                            Change Photo
+                            <input type="file" name="file"/>
+                        </div>
+                    </div>
+                </div>
+<!--                <div class="col-md-12">-->
+<!--                    <div class="profile-work">-->
+<!--                        <p>SOCIAL LINK</p>-->
+<!--                        <a href="">Facebook</a><br/>-->
+<!--                        <a href="">Twitter</a><br/>-->
+<!--                        <a href="">Instagram</a>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
-
+        <div class="col-md-8">
+            <div class="row">
+                <div class=" col-md-8">
+                    <div class="profile-head">
+                        <h5>
+                            <%= u.username %>
+                        </h5>
+                        <h6>
+                            <%= u.rank %>
+                        </h6>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <input type="button" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+                </div>
+                <div class="col-md-12">
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><%= u.email %></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Phone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><%= u.phone %></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Birthday</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><%= u.date %></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Country</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><%= u.country %></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <% include partials/footer %>

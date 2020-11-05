@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const Campground = require("../models/campground");
 const Comment = require("../models/comment");
 
@@ -114,12 +117,23 @@ module.exports.getCampgrounds = (req, res) => {
         return res.redirect('back');
       }
 
+      const filename = foundcampground.image.replace(/^.*[\\\/]/, '');
+      const filepath = path.join(__dirname, '/../public/uploads/images/', filename);
+
       const newData = {
         name: req.body.name,
         image: typeof req.file === 'undefined' ? foundcampground.image : url + '/uploads/images/' + req.file.filename,
         description: req.body.description,
         price: req.body.price
       };
+
+      if (typeof req.file !== 'undefined') {
+        try {
+          fs.unlinkSync(filepath);
+        } catch (e) {
+
+        }
+      }
 
       Campground.findByIdAndUpdate(req.params.id, newData, function(err, campground) {
           if (err) {
@@ -138,6 +152,16 @@ module.exports.getCampgrounds = (req, res) => {
         req.flash("error", err.message);
         return res.redirect('back');
       }
+
+      const filename = deletedCampground.image.replace(/^.*[\\\/]/, '');
+      const filepath = path.join(__dirname, '/../public/uploads/images/', filename);
+
+      try {
+        fs.unlinkSync(filepath);
+      } catch (e) {
+
+      }
+
       req.flash("success", "Successfully deleted " + deletedCampground.name + " campground!");
       res.redirect("/campgrounds");
     });

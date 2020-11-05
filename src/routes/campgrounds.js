@@ -16,7 +16,7 @@ router.get("/:id", campgroundsController.getCampground);
 router.post("/", middleware.isLoggedIn, upload, resize.resizeImages, campgroundsController.postCampground);
 
 // edit campground
-router.post("/:id/edit", middleware.isLoggedIn, middleware.ownerCheck, upload, campgroundsController.postEditCampground);
+router.post("/:id/edit", middleware.isLoggedIn, middleware.ownerCheck, upload, resize.resizeImages, campgroundsController.postEditCampground);
 
 // delete campground
 router.post("/:id/delete", middleware.isLoggedIn, middleware.ownerCheck, campgroundsController.deleteCampground);

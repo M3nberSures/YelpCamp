@@ -9,6 +9,7 @@ let userSchema = new mongoose.Schema({
     description: { type: String, default: 'No description given...'},
     rank: { type: String, default: 'user'},
     date: { type: String, default: 'No birthday given'},
+    phone: { type: String, default: 'No phone'},
     country: { type: String, default: 'No country given'},
     address: { type: String, default: 'No address given'},
     active: { type: Boolean, default: false }
