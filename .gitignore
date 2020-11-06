@@ -122,4 +122,6 @@ dist
 # Editor-based HTTP Client requests
 /httpRequests/
 
+.vscode
+
 /src/public/uploads/images/*.*
