@@ -68,7 +68,7 @@ app.use(
         "base-uri": ["'self'"],
         "font-src": ["'self'", "https: data:"],
         "frame-ancestors": ["'self'"],
-        "img-src": ["'self'", "res.cloudinary.com", "data:"],
+        "img-src": ["'self'", "data:"],
         "object-src": ["'none'"],
         "script-src": ["'self'", "'unsafe-inline'", "kit.fontawesome.com"],
         "script-src-attr": ["'none'"],
