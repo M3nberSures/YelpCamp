@@ -23,12 +23,13 @@ npm run start
 # Todos
 
   - Evolving the ui.
-  - Adding the ability to change the password.
-  - Reworking image uploads.
-  - Adding the ability to change the user informations from his profile.
   - Adding geolocalisation to the app.
   - Maybe rewritte all frontend code into angular.
   - Adding ability to describe the campground more than just a text box.
+  - Resend email confirmation when changing the email
+  - Ability to rate a campground with stars 1/5
+  - Ability to like comments
+  - Adding ajax & socket.io for updating data on client side without redirecting
 
 ### Technologies
 
