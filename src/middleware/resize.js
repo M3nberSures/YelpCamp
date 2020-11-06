@@ -8,7 +8,10 @@ resize.resizeImages = async function(req, res, next) {
     if (!req.file) return next();
     const filename = req.file.filename;
     const filepath = path.join(__dirname, '/../../', req.file.path);
-
+    const imagesPath = path.join('src/public/uploads/images');
+    if (!fs.existsSync(imagesPath)) {
+        fs.mkdirSync(imagesPath);
+    }
     try {
         await sharp(filepath)
             .resize(500, 325)
