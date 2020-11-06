@@ -14,10 +14,13 @@ let campgroundSchema = new mongoose.Schema({
       id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-      },
-      username: String
+      }
     },
     price: Number,
+    street: String,
+    city: String,
+    state: String,
+    country: String
   }, { timestamps: true });
   
 module.exports = mongoose.model("Campground", campgroundSchema);

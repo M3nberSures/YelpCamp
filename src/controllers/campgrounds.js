@@ -3,8 +3,10 @@ const path = require('path');
 
 const Campground = require("../models/campground");
 const Comment = require("../models/comment");
+const User = require("../models/user");
 
 const utils = require('../utils/date');
+const addUtils = require('../utils/address');
 
 
 function Camground(name, image, description, price, username, iduser) {
@@ -20,14 +22,14 @@ function Camground(name, image, description, price, username, iduser) {
 
 module.exports.getCampgrounds = (req, res) => {
     // get all campgrounds from db
-    Campground.find({}, (err, campgrounds) => {
+    Campground.find({}, async (err, campgrounds) => {
       if (err) {
         req.flash("error", err.message);
         return res.redirect('back');
       } else {
         res.render("campgrounds", {
           campgrounds: campgrounds,
-          doctitle: "Camgrounds Page",
+          doctitle: "Camgrounds Page"
         });
       }
     });
@@ -35,16 +37,28 @@ module.exports.getCampgrounds = (req, res) => {
 
   module.exports.getCampground = function (req, res) {
     let id = req.params.id;
-    Campground.findById(id).populate("comments").exec(function (err, foundCampground) {
+    Campground.findById(id).populate("comments").exec(async function (err, foundCampground) {
       if (err) {
         req.flash("error", err.message);
         return res.redirect('back');
       } else  {
-        res.render("show", {
-          doctitle: "Show",
-          campground: foundCampground,
-          formatFromAgo: utils.formatFromAgo
-        });
+        try {
+          const authorId = foundCampground.author.id;
+          const findUser = await User.findById(authorId);
+          if (!findUser) {
+            throw 'Cannot find the author profile!';
+          }
+          res.render("show", {
+            doctitle: "Show",
+            campground: foundCampground,
+            formatFromAgo: utils.formatFromAgo,
+            formatAddress: addUtils.formatCampgroundAddress,
+            author: findUser
+          });
+        } catch (e) {
+          req.flash("error", e.message);
+          return res.redirect('back');
+        }
       }
     });
   }
@@ -53,8 +67,21 @@ module.exports.getCampgrounds = (req, res) => {
     const url = req.protocol + '://' + req.get('host');
     const imagePath = url + '/uploads/images/' + req.file.filename;
 
-    let newCampground = new Camground (req.body.name, imagePath, req.body.description, req.body.price, req.user.username, req.user._id);
-    Campground.create(newCampground, function (err, newlyCreated) {
+    const data = {
+      name: req.body.name,
+      image: imagePath,
+      description: req.body.description,
+      price: req.body.price,
+      author: {
+        id: req.user._id
+      },
+      street: req.body.street,
+      city: req.body.city,
+      state: req.body.state,
+      country: req.body.country
+    }
+
+    Campground.create(data, function (err, newlyCreated) {
       if (err) {
         req.flash("errorcampground", err.message);
         return res.redirect('back');
@@ -124,7 +151,11 @@ module.exports.getCampgrounds = (req, res) => {
         name: req.body.name,
         image: typeof req.file === 'undefined' ? foundcampground.image : url + '/uploads/images/' + req.file.filename,
         description: req.body.description,
-        price: req.body.price
+        price: req.body.price,
+        street: req.body.street,
+        city: req.body.city,
+        state: req.body.state,
+        country: req.body.country
       };
 
       if (typeof req.file !== 'undefined') {

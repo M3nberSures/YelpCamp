@@ -35,7 +35,7 @@
                             <%= u.username %>
                         </h5>
                         <h6>
-                            <%= u.rank %>
+                            <i class="fas fa-user"></i> <%= u.rank %>
                         </h6>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-4">
                     <% if (typeof user !== 'undefined' && user.id === u.id) { %>
-                        <button class="profile-edit-btn" data-toggle="modal" data-target="#modal-edit-profile">Edit Profile</button>
+                        <button class="profile-edit-btn" data-toggle="modal" data-target="#modal-edit-profile">Edit Profile <i class="fas fa-user-edit"></i></button>
                     <% } %>
                 </div>
                 <div class="col-md-12">
@@ -54,7 +54,7 @@
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label>Email</label>
+                                    <label><i class="fas fa-envelope"></i> Email</label>
                                 </div>
                                 <div class="col-md-6">
                                     <p><%= u.email %></p>
@@ -62,7 +62,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label>Phone</label>
+                                    <label><i class="fas fa-phone"></i> Phone</label>
                                 </div>
                                 <div class="col-md-6">
                                     <p><%= u.phone %></p>
@@ -70,18 +70,18 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label>Birthday</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p><%= u.date %></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Country</label>
+                                    <label><i class="fas fa-globe-americas"></i> Country</label>
                                 </div>
                                 <div class="col-md-6">
                                     <p><%= u.country %></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label><i class="fas fa-align-justify"></i> Description</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <p><%= u.description %></p>
                                 </div>
                             </div>
                         </div>
@@ -107,20 +107,16 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="profileEmail">Email</label>
-                            <input type="email" class="form-control" name="profileEmail" id="profileEmail" placeholder="Enter email" required>
+                            <input type="email" class="form-control" name="profileEmail" id="profileEmail" placeholder="Enter email" value="<%= u.email %>" required>
                         </div>
                         <div class="form-group">
                             <label for="profilePhone">Phone</label>
-                            <input type="text" class="form-control" name="profilePhone" id="profilePhone" placeholder="Enter phone number" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="profileBirthday">Birthday</label>
-                            <input type="date" class="form-control" name="profileBirthday" id="profileBirthday" placeholder="Enter birthday" required>
+                            <input type="text" class="form-control" name="profilePhone" id="profilePhone" placeholder="Enter phone number" value="<%= u.phone %>" required>
                         </div>
                         <div class="form-group">
                             <label for="profileCountry">Country</label>
                             <select id="profileCountry" name="profileCountry" class="form-control">
-                                <option value="No country" selected="selected">No country</option>
+                                <option value="<%= u.country %>" selected="selected"><%= u.country %></option>
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
                                 <option value="Albania">Albania</option>
@@ -366,6 +362,10 @@
                                 <option value="Zambia">Zambia</option>
                                 <option value="Zimbabwe">Zimbabwe</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileDescription">Description</label>
+                            <textarea class="form-control" name="profileDescription" id="profileDescription" rows="8" placeholder="profile description" required><%= u.description %></textarea>
                         </div>
                         <% if ( errorprofile.length > 0) { %>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">

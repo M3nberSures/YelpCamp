@@ -22,6 +22,8 @@ router.post("/register", indexController.postRegister);
   router.post("/changepassword", middleware.isLoggedIn, indexController.changePassword);
 
   router.post("/updateprofileimage", middleware.isLoggedIn, upload.single('profileimg'), resize.resizeImages, indexController.updateProfileImage);
+  router.post("/editprofile", middleware.isLoggedIn, indexController.editProfile);
+
 
   // profils routes
   router.get("/profils/:id", indexController.getProfileById);

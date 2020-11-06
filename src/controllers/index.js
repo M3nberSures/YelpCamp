@@ -156,6 +156,9 @@ module.exports.postRegister = (req, res) => {
     
     try {
       const findUser = await User.findById(userId);
+      if (!findUser) {
+        throw 'Cannot find your profile!';
+      }
       const filename = findUser.image.replace(/^.*[\\\/]/, '');
       filepath = path.join(__dirname, '/../public/uploads/images/', filename);
       findUser.image = imagePath;
@@ -171,5 +174,51 @@ module.exports.postRegister = (req, res) => {
       } catch (e) {
         
       }
+    }
+  }
+
+  module.exports.editProfile = async function(req, res) {
+    let bError = false;
+    let sErrorMsg = '';
+    const id = req.user._id;
+    const email = req.body.profileEmail;
+    const phone = req.body.profilePhone;
+    const country = req.body.profileCountry;
+    const description = req.body.profileDescription;
+
+    const newData = { email, phone, country, description };
+
+    for (let prop in newData) {
+      if (newData.hasOwnProperty(prop)) {
+        console.log(prop);
+        const value = newData[prop];
+        if (value == null || value === '' || value.length <= 0) {
+          bError = true;
+          sErrorMsg = `The field ${prop} is empty or missing!`;
+          break;
+        }
+      }
+    }
+
+    if (bError) {
+      req.flash("error", sErrorMsg);
+      return res.redirect('back');
+    }
+
+    try {
+      const findUser = await User.findById(id);
+      if (!findUser) {
+        throw 'Cannot find your profile!';
+      }
+      findUser.email = newData.email;
+      findUser.phone = newData.phone;
+      findUser.country = newData.country;
+      findUser.description = newData.description;
+      await findUser.save();
+      req.flash("success", "Successfully updated your profile!");
+      return res.status(200).redirect('back');
+    } catch (e) {
+      req.flash("error", e.message);
+      return res.status(500).redirect('back');
     }
   }
