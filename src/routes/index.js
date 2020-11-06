@@ -14,6 +14,8 @@ router.get("/", indexController.getIndex);
 // register routes
 router.post("/register", indexController.postRegister);
 
+router.get("/sendnewemail", middleware.isLoggedIn, indexController.sendNewEmail);
+
 
  router.post('/login', indexController.postLogin);
   

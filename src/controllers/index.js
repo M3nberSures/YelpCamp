@@ -222,3 +222,21 @@ module.exports.postRegister = (req, res) => {
       return res.status(500).redirect('back');
     }
   }
+
+
+  module.exports.sendNewEmail = async function(req, res) {
+    const id = req.user._id;
+    try {
+      const findUser = await User.findById(id);
+      if (!findUser) {
+        throw 'Cannot find your profile!';
+      }
+      const token = await jwt.sign({ _id: findUser._id, username: findUser.username, email: findUser.email }, process.env.JSON_WEB_TOKEN_SECRET, { expiresIn: '1h' });
+      await email.sendRegisterEmail(findUser._id, findUser.username, findUser.email, req.protocol + '://' + req.get('host'), token);
+      req.flash("success", "Successfully sended new confirmation email!");
+      return res.status(200).redirect('back');
+    } catch (e) {
+      req.flash("error", e.message);
+      return res.status(500).redirect('back');
+    }
+  }

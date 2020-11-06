@@ -522,4 +522,12 @@
             </button>
         </div>
       <% } %>
+      <% if (user && user.active === false ) { %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Account not verified!</strong> Please click <a href="/sendnewemail">here</a> to send a new confirmation email !
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+      <% } %>
     </div>
