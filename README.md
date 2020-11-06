@@ -30,6 +30,7 @@ npm run start
   - Ability to rate a campground with stars 1/5
   - Ability to like comments
   - Adding ajax & socket.io for updating data on client side without redirecting
+  - Ability the logic for forgot password change
 
 ### Technologies
 
