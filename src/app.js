@@ -112,6 +112,7 @@ app.use(function(req, res, next){
   res.locals.errorregister = req.flash("errorregister");
   res.locals.errorpasswordchange = req.flash("errorpasswordchange");
   res.locals.errorcampground = req.flash("errorcampground");
+  res.locals.errorprofile = req.flash("errorprofile");
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
   next();

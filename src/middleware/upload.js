@@ -25,4 +25,4 @@ let imageFilter = function (req, file, cb) {
     cb(null, true);
 };
 
-module.exports = multer({ storage: storage, fileFilter: imageFilter }).single('image');
+module.exports = multer({ storage: storage, fileFilter: imageFilter });

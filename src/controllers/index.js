@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
 const User = require("../models/user");
 const UsedToken = require("../models/usedToken");
@@ -131,11 +133,43 @@ module.exports.postRegister = (req, res) => {
         return res.status(400).redirect('back');
       }
       await findUser.changePassword(currentPassword, changePassword);
-      findUser.save();
+      await findUser.save();
       req.flash("success", "Successfully change your password!");
       return res.status(200).redirect('back');
     } catch (e) {
       req.flash("errorpasswordchange", e.message);
       return res.status(404).redirect('back');
+    }
+  }
+
+  module.exports.updateProfileImage = async function(req, res) {
+    if (typeof req.file === 'undefined') {
+      console.log(req.file);
+      req.flash("error", "Please upload an image for your profile!");
+      return res.status(404).redirect('back');
+    }
+
+    const userId = req.user._id;
+    const url = req.protocol + '://' + req.get('host');
+    const imagePath = url + '/uploads/images/' + req.file.filename;
+    let filepath;
+    
+    try {
+      const findUser = await User.findById(userId);
+      const filename = findUser.image.replace(/^.*[\\\/]/, '');
+      filepath = path.join(__dirname, '/../public/uploads/images/', filename);
+      findUser.image = imagePath;
+      await findUser.save();
+      req.flash("success", "Successfully change your profile image!");
+      return res.status(200).redirect('back');
+    } catch (e) {
+      req.flash("error", e.message);
+      return res.status(500).redirect('back');
+    } finally {
+      try {
+        fs.unlinkSync(filepath);
+      } catch (e) {
+        
+      }
     }
   }

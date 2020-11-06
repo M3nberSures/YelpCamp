@@ -13,10 +13,10 @@ router.get("/", campgroundsController.getCampgrounds);
 router.get("/:id", campgroundsController.getCampground);
 
 // post request to create new camground
-router.post("/", middleware.isLoggedIn, upload, resize.resizeImages, campgroundsController.postCampground);
+router.post("/", middleware.isLoggedIn, upload.single('image'), resize.resizeImages, campgroundsController.postCampground);
 
 // edit campground
-router.post("/:id/edit", middleware.isLoggedIn, middleware.ownerCheck, upload, resize.resizeImages, campgroundsController.postEditCampground);
+router.post("/:id/edit", middleware.isLoggedIn, middleware.ownerCheck, upload.single('image'), resize.resizeImages, campgroundsController.postEditCampground);
 
 // delete campground
 router.post("/:id/delete", middleware.isLoggedIn, middleware.ownerCheck, campgroundsController.deleteCampground);
